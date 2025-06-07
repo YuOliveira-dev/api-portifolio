@@ -5,7 +5,9 @@ require("dotenv").config();
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin: 'https://portifolio-nine-phi-92.vercel.app'
+}));
 app.use(express.json());
 app.use("/api/contato", contatoRoutes);
 
