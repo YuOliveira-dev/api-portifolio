@@ -5,15 +5,33 @@ require("dotenv").config();
 
 const app = express();
 
-app.use(cors({
-  origin: ['https://portifolio-nine-phi-92.vercel.app', 'http://localhost:5173'],
-  methods: ['POST', 'GET', 'OPTIONS'],
-  allowedHeaders: ['Content-Type']
-}));
-app.options("*", cors());
+// Lista de origens permitidas
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://portifolio-nine-phi-92.vercel.app"
+];
+
+// Configuração personalizada do CORS
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+  }
+
+  res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(204); // Pré-vetado
+  }
+
+  next();
+});
+
 app.use(express.json());
 app.use("/api/contato", contatoRoutes);
-
 
 try {
   app.listen(3001, () => {
