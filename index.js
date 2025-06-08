@@ -6,8 +6,11 @@ require("dotenv").config();
 const app = express();
 
 app.use(cors({
-  origin: ['https://portifolio-nine-phi-92.vercel.app', 'http://localhost:5173/']
+  origin: ['https://portifolio-nine-phi-92.vercel.app', 'http://localhost:5173'],
+  methods: ['POST', 'GET', 'OPTIONS'],
+  allowedHeaders: ['Content-Type']
 }));
+app.options("*", cors());
 app.use(express.json());
 app.use("/api/contato", contatoRoutes);
 
